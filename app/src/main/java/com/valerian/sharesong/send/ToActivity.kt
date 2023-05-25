@@ -12,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import com.valerian.sharesong.ShareSongClient
 import com.valerian.sharesong.converter.from.UriFromSharedString
 import com.valerian.sharesong.converter.from.convertFrom
 import com.valerian.sharesong.converter.to.ToService
@@ -20,6 +21,7 @@ import com.valerian.sharesong.ui.composable.Greeting
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import retrofit2.await
 
 abstract class ToActivity : ComponentActivity() {
     private var textShowingIntent: String? by mutableStateOf("Send Song Activity no shared intent")
@@ -29,15 +31,17 @@ abstract class ToActivity : ComponentActivity() {
         setContent {
             com.valerian.sharesong.ui.theme.ShareSongTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.surface) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.surface
+                ) {
                     Greeting(textShowingIntent)
                 }
             }
         }
     }
 
-    abstract val targetService: ToService
+    abstract val targetService: String
 
     override fun onResume() {
         super.onResume()
@@ -45,19 +49,20 @@ abstract class ToActivity : ComponentActivity() {
         lastIntent = intent
         val intentString = intent.getStringExtra(Intent.EXTRA_TEXT) ?: return
         val intentUri = UriFromSharedString.get(intentString) ?: return
-        if (allowedHosts.none { intentUri.host == it }) {
-            Toast.makeText(this,
+        textShowingIntent = intentUri
+
+        if (allowedUrls.none { it.containsMatchIn(intentUri) }) {
+            Toast.makeText(
+                this,
                 "Sorry, this link is not supported",
-                Toast.LENGTH_SHORT).show()
+                Toast.LENGTH_SHORT
+            ).show()
             return
         }
-        textShowingIntent = intentUri.toString()
 
         CoroutineScope(Dispatchers.IO).launch {
-            val track = convertFrom(intentUri) ?: return@launch
-
             val targetServiceUrl =
-                convertTo(track, targetService) ?: return@launch
+                ShareSongClient.instance.convert(intentUri, targetService).await().string()
 
             val sendIntent = Intent.createChooser(Intent().apply {
                 action = Intent.ACTION_SEND
@@ -70,7 +75,10 @@ abstract class ToActivity : ComponentActivity() {
     }
 
     companion object {
-        private val allowedHosts =
-            listOf("open.spotify.com", "deezer.page.link")
+        private val allowedUrls =
+            listOf(
+                "https://open\\.spotify\\.com/track/(\\w+)".toRegex(),
+                "https://deezer\\.page\\.link/(\\w+)".toRegex()
+            )
     }
 }

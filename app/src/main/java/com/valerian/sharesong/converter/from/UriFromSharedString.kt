@@ -4,7 +4,7 @@ import android.net.Uri
 
 
 object UriFromSharedString {
-    fun get(string: String): Uri? {
+    fun get(string: String): String? {
         val uriString = when {
             string.contains("deezer.page.link") -> REGEX_DEEZER.find(string)?.value
             listOf("open.spotify.com").any {
@@ -18,7 +18,7 @@ object UriFromSharedString {
             return null
         }
         println(uriString)
-        return Uri.parse(uriString)
+        return uriString
     }
 
     private val REGEX_DEEZER = "https://deezer\\.page\\.link/(\\w+)".toRegex()

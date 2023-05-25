@@ -3,6 +3,7 @@ package com.valerian.sharesong.open
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,16 +15,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.valerian.sharesong.ShareSongApplication
-import com.valerian.sharesong.converter.from.convertFrom
-import com.valerian.sharesong.converter.to.convertTo
+import com.valerian.sharesong.ShareSongClient
 import com.valerian.sharesong.ui.composable.Greeting
 import com.valerian.sharesong.ui.theme.ShareSongTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
-import com.valerian.sharesong.converter.to.Deezer as ToDeezer
-import com.valerian.sharesong.converter.to.Spotify as ToSpotify
+import retrofit2.await
 
 class OpenSongActivity : ComponentActivity() {
     private var textShowingIntent: String? by mutableStateOf("no shared intent")
@@ -34,8 +33,9 @@ class OpenSongActivity : ComponentActivity() {
 
         setContent {
             ShareSongTheme {
-                Surface(modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.surface) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.surface
+                ) {
                     Greeting(textShowingIntent)
                 }
             }
@@ -46,32 +46,39 @@ class OpenSongActivity : ComponentActivity() {
         super.onResume()
         if (intent == lastIntent) return
         lastIntent = intent
-        val intentUri = intent.data ?: return
-        textShowingIntent = intentUri.toString()
-        val dataStore =
-            (application as ShareSongApplication).dataStoreSingleton.getInstance()
+        val intentUri = intent.data?.toString() ?: return
+        textShowingIntent = intentUri
+
+        if (allowedUrls.none { it.containsMatchIn(intentUri) }) {
+            Toast.makeText(
+                this, "Sorry, this link is not supported", Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
+
+        val dataStore = (application as ShareSongApplication).dataStoreSingleton.getInstance()
 
         CoroutineScope(Dispatchers.IO).launch {
-            val track = convertFrom(intentUri) ?: return@launch
-
             val targetServiceName =
-                dataStore.data.firstOrNull()
-                    ?.get(stringPreferencesKey("serviceOfUser"))
+                dataStore.data.firstOrNull()?.get(stringPreferencesKey("serviceOfUser"))
+                    ?: return@launch
 
-            val targetService = when (targetServiceName) {
-                "Spotify" -> ToSpotify()
-                "Deezer" -> ToDeezer()
-                else -> {
-                    print("stored targetService $targetServiceName does not match any host")
-                    return@launch
-                }
-            }
 
             val targetServiceUrl =
-                convertTo(track, targetService) ?: return@launch
+                ShareSongClient.instance.convert(intentUri, targetServiceName).await().string()
 
-            startActivity(Intent(Intent.ACTION_VIEW,
-                Uri.parse(targetServiceUrl)))
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW, Uri.parse(targetServiceUrl)
+                )
+            )
         }
+    }
+
+    companion object {
+        private val allowedUrls = listOf(
+            "https://open\\.spotify\\.com/track/(\\w+)".toRegex(),
+            "https://deezer\\.page\\.link/(\\w+)".toRegex()
+        )
     }
 }
