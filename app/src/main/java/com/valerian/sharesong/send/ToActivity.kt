@@ -14,9 +14,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.valerian.sharesong.ShareSongClient
 import com.valerian.sharesong.converter.from.UriFromSharedString
-import com.valerian.sharesong.converter.from.convertFrom
-import com.valerian.sharesong.converter.to.ToService
-import com.valerian.sharesong.converter.to.convertTo
 import com.valerian.sharesong.ui.composable.Greeting
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -47,18 +44,20 @@ abstract class ToActivity : ComponentActivity() {
         super.onResume()
         if (intent == lastIntent) return
         lastIntent = intent
-        val intentString = intent.getStringExtra(Intent.EXTRA_TEXT) ?: return
-        val intentUri = UriFromSharedString.get(intentString) ?: return
-        textShowingIntent = intentUri
-
-        if (allowedUrls.none { it.containsMatchIn(intentUri) }) {
-            Toast.makeText(
-                this,
-                "Sorry, this link is not supported",
-                Toast.LENGTH_SHORT
-            ).show()
+        val intentString = intent.getStringExtra(Intent.EXTRA_TEXT)
+        if (intentString.isNullOrBlank()) {
+            println("intentString is null")
+            toastNotSupported()
             return
         }
+
+        val intentUri = UriFromSharedString.get(intentString)
+        if (intentUri.isNullOrBlank()) {
+            toastNotSupported()
+            return
+        }
+
+        textShowingIntent = intentUri
 
         CoroutineScope(Dispatchers.IO).launch {
             val targetServiceUrl =
@@ -74,11 +73,11 @@ abstract class ToActivity : ComponentActivity() {
         }
     }
 
-    companion object {
-        private val allowedUrls =
-            listOf(
-                "https://open\\.spotify\\.com/track/(\\w+)".toRegex(),
-                "https://deezer\\.page\\.link/(\\w+)".toRegex()
-            )
+    private fun toastNotSupported() {
+        Toast.makeText(
+            this,
+            "Sorry, this link is not supported",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 }
