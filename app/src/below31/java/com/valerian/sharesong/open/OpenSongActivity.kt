@@ -17,7 +17,6 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.valerian.sharesong.ShareSongApplication
 import com.valerian.sharesong.ShareSongClient
 import com.valerian.sharesong.ui.composable.Greeting
-import com.valerian.sharesong.ui.theme.ShareSongTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.firstOrNull
@@ -32,7 +31,7 @@ class OpenSongActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            ShareSongTheme {
+            com.valerian.sharesong.ui.theme.ShareSongTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.surface
                 ) {
@@ -78,7 +77,8 @@ class OpenSongActivity : ComponentActivity() {
     companion object {
         private val allowedUrls = listOf(
             "https://open\\.spotify\\.com/track/(\\w+)".toRegex(),
-            "https://deezer\\.page\\.link/(\\w+)".toRegex()
+            "https://deezer\\.page\\.link/(\\w+)".toRegex(),
+            "https://tidal\\.com/track/(\\d+)".toRegex()
         )
     }
 }

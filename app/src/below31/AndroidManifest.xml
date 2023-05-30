@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application>
+        <activity
+            android:name=".open.OpenSongActivity"
+            android:exported="false"
+            android:finishOnTaskLaunch="true"
+            android:label="@string/title_activity_open_song"
+            android:theme="@style/Theme.ShareSong">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="https" />
+                <data android:host="open.spotify.com" />
+                <data android:host="deezer.page.link" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
