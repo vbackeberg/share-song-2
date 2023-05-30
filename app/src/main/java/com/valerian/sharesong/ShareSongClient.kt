@@ -8,10 +8,10 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface ShareSongApi {
-    @GET("convert")
+    @GET("https://convert-f47vs76u2q-ew.a.run.app")
     fun convert(
         @Query("originServiceUrl") originServiceUrl: String,
-        @Query("targetServiceName") targetService: String
+        @Query("targetService") targetService: String
     ): Call<ResponseBody>
 }
 
@@ -20,7 +20,7 @@ object ShareSongClient {
 
     private fun createShareSongApi(): ShareSongApi {
         return Retrofit.Builder()
-            .baseUrl("https://firebase/")
+            .baseUrl("https://convert-f47vs76u2q-ew.a.run.app")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ShareSongApi::class.java)
