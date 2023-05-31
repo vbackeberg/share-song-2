@@ -35,7 +35,7 @@ import kotlinx.coroutines.launch
 
 class SettingsActivity : ComponentActivity() {
     private val items =
-        mutableStateListOf("Spotify", "Deezer")
+        mutableStateListOf("Spotify", "Deezer", "Tidal")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
