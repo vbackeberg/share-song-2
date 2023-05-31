@@ -88,7 +88,7 @@ class SettingsActivity : ComponentActivity() {
 
                         Text(
                             fontSize = 16.sp,
-                            text = "If you click a link from a supported music service, it will be opened in $selectedService.",
+                            text = "If you click a link from a supported music service, it will be opened in ${selectedService.value}.",
                             modifier = Modifier.padding(16.dp)
                         )
                     }
