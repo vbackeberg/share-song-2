@@ -48,20 +48,25 @@ class SettingsActivity : ComponentActivity() {
         setContent {
             ShareSongTheme {
                 Surface(color = MaterialTheme.colorScheme.surface) {
-                    Column(modifier = Modifier
-                        .padding(16.dp, 48.dp)
-                        .fillMaxSize()) {
+                    Column(
+                        modifier = Modifier
+                            .padding(16.dp, 48.dp)
+                            .fillMaxSize()
+                    ) {
 
                         val selectedService =
                             targetServiceFlow.collectAsStateWithLifecycle(
-                                initialValue = "no")
+                                initialValue = "no"
+                            )
                         val coroutineScope = rememberCoroutineScope()
 
-                        Text(fontWeight = FontWeight.Bold,
+                        Text(
+                            fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center,
                             fontSize = 24.sp,
                             text = "Choose your music service",
-                            modifier = Modifier.padding(16.dp))
+                            modifier = Modifier.padding(16.dp)
+                        )
 
                         LazyVerticalGrid(
                             columns = GridCells.Fixed(2),
@@ -83,8 +88,9 @@ class SettingsActivity : ComponentActivity() {
 
                         Text(
                             fontSize = 16.sp,
-                            text = "If you click a music link, it will be opened in your own music app.",
-                            modifier = Modifier.padding(16.dp))
+                            text = "If you click a link from a supported music service, it will be opened in $selectedService.",
+                            modifier = Modifier.padding(16.dp)
+                        )
                     }
                 }
             }
@@ -97,14 +103,17 @@ class SettingsActivity : ComponentActivity() {
 }
 
 @Composable
-fun ButtonWithOutline(text: String, isSelected: Boolean, onSelected: () -> Unit
+fun ButtonWithOutline(
+    text: String, isSelected: Boolean, onSelected: () -> Unit
 ) {
     Button(
         colors = if (isSelected) ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = MaterialTheme.colorScheme.onPrimary,
-        ) else ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primaryContainer,
-            contentColor = MaterialTheme.colorScheme.onPrimaryContainer),
+        ) else ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+        ),
         shape = RoundedCornerShape(16.dp),
         onClick = onSelected,
         modifier = Modifier
