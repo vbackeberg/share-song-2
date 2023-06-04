@@ -14,13 +14,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.datastore.preferences.core.stringPreferencesKey
+import com.valerian.sharesong.ALLOWED_URLS
 import com.valerian.sharesong.ShareSongApplication
 import com.valerian.sharesong.ShareSongClient
-import com.valerian.sharesong.ui.composable.Greeting
+import com.valerian.sharesong.ui.composable.LoadingScreen
+import com.valerian.sharesong.ui.theme.ShareSongTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.await
 
 class OpenSongActivity : ComponentActivity() {
@@ -35,7 +38,7 @@ class OpenSongActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.surface
                 ) {
-                    Greeting(textShowingIntent)
+                    LoadingScreen(textShowingIntent)
                 }
             }
         }
@@ -48,7 +51,7 @@ class OpenSongActivity : ComponentActivity() {
         val intentUri = intent.data?.toString() ?: return
         textShowingIntent = intentUri
 
-        if (allowedUrls.none { it.containsMatchIn(intentUri) }) {
+        if (ALLOWED_URLS.none { it.containsMatchIn(intentUri) }) {
             Toast.makeText(
                 this, "Sorry, this link is not supported", Toast.LENGTH_SHORT
             ).show()
@@ -60,11 +63,30 @@ class OpenSongActivity : ComponentActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             val targetServiceName =
                 dataStore.data.firstOrNull()?.get(stringPreferencesKey("serviceOfUser"))
-                    ?: return@launch
 
+            if (targetServiceName == null) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        this@OpenSongActivity,
+                        "Open Share Song settings, and choose the service you want to convert to.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                return@launch
+            }
 
-            val targetServiceUrl =
+            val targetServiceUrl = try {
                 ShareSongClient.instance.convert(intentUri, targetServiceName).await().string()
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        this@OpenSongActivity,
+                        "Sorry, your song could not be converted. Maybe, it wasn't found on ${targetServiceName}.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                return@launch
+            }
 
             startActivity(
                 Intent(
@@ -72,13 +94,5 @@ class OpenSongActivity : ComponentActivity() {
                 )
             )
         }
-    }
-
-    companion object {
-        private val allowedUrls = listOf(
-            "https://open\\.spotify\\.com/track/(\\w+)".toRegex(),
-            "https://deezer\\.page\\.link/(\\w+)".toRegex(),
-            "https://tidal\\.com/track/(\\d+)".toRegex()
-        )
     }
 }

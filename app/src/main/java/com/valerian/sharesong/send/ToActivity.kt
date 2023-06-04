@@ -13,11 +13,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.valerian.sharesong.ShareSongClient
-import com.valerian.sharesong.converter.from.UriFromSharedString
-import com.valerian.sharesong.ui.composable.Greeting
+import com.valerian.sharesong.converter.from.uriFromSharedString
+import com.valerian.sharesong.ui.composable.LoadingScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.await
 
 abstract class ToActivity : ComponentActivity() {
@@ -27,12 +28,10 @@ abstract class ToActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             com.valerian.sharesong.ui.theme.ShareSongTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.surface
+                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.surface
                 ) {
-                    Greeting(textShowingIntent)
+                    LoadingScreen(textShowingIntent)
                 }
             }
         }
@@ -51,7 +50,7 @@ abstract class ToActivity : ComponentActivity() {
             return
         }
 
-        val intentUri = UriFromSharedString.get(intentString)
+        val intentUri = uriFromSharedString(intentString)
         if (intentUri.isNullOrBlank()) {
             toastNotSupported()
             return
@@ -60,8 +59,18 @@ abstract class ToActivity : ComponentActivity() {
         textShowingIntent = intentUri
 
         CoroutineScope(Dispatchers.IO).launch {
-            val targetServiceUrl =
+            val targetServiceUrl = try {
                 ShareSongClient.instance.convert(intentUri, targetService).await().string()
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        this@ToActivity,
+                        "Sorry, your song could not be converted. Maybe, it wasn't found on ${targetService}.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                return@launch
+            }
 
             val sendIntent = Intent.createChooser(Intent().apply {
                 action = Intent.ACTION_SEND
@@ -75,9 +84,7 @@ abstract class ToActivity : ComponentActivity() {
 
     private fun toastNotSupported() {
         Toast.makeText(
-            this,
-            "Sorry, this link is not supported",
-            Toast.LENGTH_SHORT
+            this, "Sorry, this link is not supported", Toast.LENGTH_SHORT
         ).show()
     }
 }

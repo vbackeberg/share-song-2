@@ -1,5 +1,5 @@
 package com.valerian.sharesong.send
 
 class ToDeezerActivity : ToActivity() {
-    override val targetService = "deezer"
+    override val targetService = "Deezer"
 }

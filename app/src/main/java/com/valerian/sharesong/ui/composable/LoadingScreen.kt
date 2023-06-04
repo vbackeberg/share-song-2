@@ -17,7 +17,7 @@ import com.valerian.sharesong.ui.theme.ShareSongTheme
 
 
 @Composable
-fun Greeting(name: String?) {
+fun LoadingScreen(name: String?) {
     Column(modifier = Modifier
         .padding(start = 16.dp, end = 16.dp, top = 64.dp, bottom = 16.dp)
         .fillMaxSize()) {
@@ -44,6 +44,6 @@ fun Greeting(name: String?) {
 @Composable
 fun GreetingPreview() {
     ShareSongTheme {
-        Greeting("MainActivity")
+        LoadingScreen("MainActivity")
     }
 }
