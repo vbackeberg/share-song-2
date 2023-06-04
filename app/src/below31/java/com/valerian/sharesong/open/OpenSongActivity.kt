@@ -34,7 +34,7 @@ class OpenSongActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            com.valerian.sharesong.ui.theme.ShareSongTheme {
+            ShareSongTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.surface
                 ) {
