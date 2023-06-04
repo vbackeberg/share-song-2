@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "com.valerian.sharesong"
-        minSdk 24
+        minSdk 31
         targetSdk 33
         versionCode 3
         versionName "2.1"
@@ -51,8 +51,22 @@ android {
         }
     }
 
+    flavorDimensions += "api"
     productFlavors {
-        below31 {}
+        create("above31") {
+            dimension = "api"
+            minSdk 31
+            applicationIdSuffix = ".above31"
+            versionNameSuffix = "-above31"
+            versionCode = 20000 + (android.defaultConfig.versionCode ?: 0)
+        }
+        create("below31") {
+            dimension = "api"
+            minSdk 24
+            applicationIdSuffix = ".below31"
+            versionNameSuffix = "-below31"
+            versionCode = 10000 + (android.defaultConfig.versionCode ?: 0)
+        }
     }
 }
 

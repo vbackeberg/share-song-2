@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <application>
         <activity
             android:name=".open.OpenSongActivity"
-            android:exported="false"
-            android:finishOnTaskLaunch="true"
-            android:label="@string/title_activity_open_song"
-            android:theme="@style/Theme.ShareSong">
+            android:exported="true"
+            android:finishOnTaskLaunch="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -20,6 +15,16 @@
                 <data android:scheme="https" />
                 <data android:host="open.spotify.com" />
                 <data android:host="deezer.page.link" />
+                <data android:host="tidal.com" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>

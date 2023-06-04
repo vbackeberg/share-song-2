@@ -15,12 +15,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ShareSong"
-        tools:targetApi="31">
+        tools:targetApi="33">
         <activity
             android:name=".send.ToActivity"
             android:exported="false"
-            android:label="@string/title_activity_to"
             android:finishOnTaskLaunch="true"
+            android:label="@string/title_activity_to"
             android:theme="@style/Theme.ShareSong" />
         <activity
             android:name=".send.ToSpotifyActivity"
@@ -59,30 +59,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data android:mimeType="text/plain" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".SettingsActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".open.OpenSongActivity"
-            android:exported="true"
-            android:finishOnTaskLaunch="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="https" />
-                <data android:host="open.spotify.com" />
-                <data android:host="deezer.page.link" />
             </intent-filter>
         </activity>
     </application>
