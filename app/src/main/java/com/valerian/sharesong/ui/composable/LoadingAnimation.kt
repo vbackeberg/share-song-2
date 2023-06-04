@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 class Loading {}
 
 @Composable
-fun Dot(modifier: Modifier = Modifier) {
+private fun Dot(modifier: Modifier = Modifier) {
     val colorScheme = MaterialTheme.colorScheme.secondary
     Canvas(modifier = modifier) {
         drawCircle(color = colorScheme, radius = size.minDimension / 2)
@@ -32,7 +32,7 @@ fun Dot(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun OscillatingDot(modifier: Modifier = Modifier, startOffset: Int
+private fun OscillatingDot(modifier: Modifier = Modifier, startOffset: Int
 ) {
     val offsetY = remember { Animatable(0f) }
 

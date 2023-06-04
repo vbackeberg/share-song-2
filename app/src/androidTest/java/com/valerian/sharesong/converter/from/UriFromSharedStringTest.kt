@@ -11,7 +11,9 @@ class UriFromSharedStringTest {
         val sharedString =
             "I've found a song for you... Auf & Ab (Piano Version) by Montez \uD83D\uDD25 Listen now on #Deezer https://deezer.page.link/PpY5eGkh9tJcD62o6"
 
-        assertEquals(Uri.parse("https://deezer.page.link/PpY5eGkh9tJcD62o6"),
-            UriFromSharedString.get(sharedString))
+        assertEquals(
+            Uri.parse("https://deezer.page.link/PpY5eGkh9tJcD62o6"),
+            uriFromSharedString(sharedString)
+        )
     }
 }
