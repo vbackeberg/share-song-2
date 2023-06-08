@@ -14,8 +14,13 @@
 
                 <data android:scheme="https" />
                 <data android:host="open.spotify.com" />
+                <data android:pathPattern="/track/.*" />
                 <data android:host="deezer.page.link" />
+                <data android:pathPattern="/.*" />
                 <data android:host="tidal.com" />
+                <data android:pathPattern="/track/.*" />
+                <data android:host="music.apple.com" />
+                <data android:pathPattern="/.*/album/.*/.*" />
             </intent-filter>
         </activity>
         <activity
