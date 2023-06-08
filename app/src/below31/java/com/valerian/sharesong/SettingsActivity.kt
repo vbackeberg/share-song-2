@@ -19,7 +19,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -34,16 +33,18 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class SettingsActivity : ComponentActivity() {
-    private val items =
-        mutableStateListOf("Spotify", "Deezer", "Tidal")
+    private val items = mutableMapOf(
+        ("Spotify" to "Spotify"),
+        ("Deezer" to "Deezer"),
+        ("Tidal" to "Tidal"),
+        ("AppleMusic" to "Apple Music")
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val dataStore =
-            (application as ShareSongApplication).dataStoreSingleton.getInstance()
-        val targetServiceFlow =
-            dataStore.data.map { it[SERVICE_OF_USER].orEmpty() }
+        val dataStore = (application as ShareSongApplication).dataStoreSingleton.getInstance()
+        val targetService = dataStore.data.map { it[SERVICE_OF_USER].orEmpty() }
 
         setContent {
             ShareSongTheme {
@@ -54,10 +55,9 @@ class SettingsActivity : ComponentActivity() {
                             .fillMaxSize()
                     ) {
 
-                        val selectedService =
-                            targetServiceFlow.collectAsStateWithLifecycle(
-                                initialValue = "no"
-                            )
+                        val selectedService = targetService.collectAsStateWithLifecycle(
+                            initialValue = "no"
+                        )
                         val coroutineScope = rememberCoroutineScope()
 
                         Text(
@@ -72,14 +72,14 @@ class SettingsActivity : ComponentActivity() {
                             columns = GridCells.Fixed(2),
                             horizontalArrangement = Arrangement.SpaceBetween,
                         ) {
-                            itemsIndexed(items) { index, _ ->
-                                ButtonWithOutline(text = items[index],
-                                    isSelected = items[index] == selectedService.value,
+                            val itemKeys = items.keys.toList()
+                            itemsIndexed(itemKeys) { index, _ ->
+                                ButtonWithOutline(text = items[itemKeys[index]].orEmpty(),
+                                    isSelected = itemKeys[index] == selectedService.value,
                                     onSelected = {
                                         coroutineScope.launch {
                                             dataStore.edit { preferences ->
-                                                preferences[SERVICE_OF_USER] =
-                                                    items[index]
+                                                preferences[SERVICE_OF_USER] = itemKeys[index]
                                             }
                                         }
                                     })
@@ -88,7 +88,7 @@ class SettingsActivity : ComponentActivity() {
 
                         Text(
                             fontSize = 16.sp,
-                            text = "If you click a link from a supported music service, it will be opened in ${selectedService.value}.",
+                            text = "If you click a link from a supported music service, it will be opened in ${items[selectedService.value]}.",
                             modifier = Modifier.padding(16.dp)
                         )
                     }
