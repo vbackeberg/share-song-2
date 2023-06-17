@@ -59,8 +59,8 @@ abstract class ToActivity : ComponentActivity() {
         textShowingIntent = intentUri
 
         CoroutineScope(Dispatchers.IO).launch {
-            val targetServiceUrl = try {
-                ShareSongClient.instance.convert(intentUri, targetService).await().string()
+            val response = try {
+                ShareSongClient.instance.convert(intentUri, targetService).await()
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
@@ -74,7 +74,11 @@ abstract class ToActivity : ComponentActivity() {
 
             val sendIntent = Intent.createChooser(Intent().apply {
                 action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, targetServiceUrl)
+                putExtra(
+                    Intent.EXTRA_TEXT,
+                    "Shared from ${response.originService} to $targetService because I can. \uD83D\uDE0E" +
+                            "${System.lineSeparator()}${response.targetServiceUrl}"
+                )
                 type = "text/plain"
             }, null)
 

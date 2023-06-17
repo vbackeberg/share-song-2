@@ -75,8 +75,8 @@ class OpenSongActivity : ComponentActivity() {
                 return@launch
             }
 
-            val targetServiceUrl = try {
-                ShareSongClient.instance.convert(intentUri, targetServiceName).await().string()
+            val response = try {
+                ShareSongClient.instance.convert(intentUri, targetServiceName).await()
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
@@ -90,7 +90,7 @@ class OpenSongActivity : ComponentActivity() {
 
             startActivity(
                 Intent(
-                    Intent.ACTION_VIEW, Uri.parse(targetServiceUrl)
+                    Intent.ACTION_VIEW, Uri.parse(response.targetServiceUrl)
                 )
             )
         }
