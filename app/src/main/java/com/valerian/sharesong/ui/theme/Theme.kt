@@ -72,7 +72,8 @@ fun ShareSongTheme(
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(
-                context)
+                context
+            )
         }
 
         darkTheme -> DarkColorScheme
@@ -82,9 +83,17 @@ fun ShareSongTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.surfaceVariant.toArgb()
-            WindowCompat.getInsetsController(window,
-                view).isAppearanceLightStatusBars = darkTheme
+            window.apply {
+                statusBarColor = colorScheme.background.toArgb()
+                navigationBarColor = colorScheme.background.toArgb()
+            }
+            WindowCompat.getInsetsController(
+                window,
+                view
+            ).apply {
+                isAppearanceLightStatusBars = !darkTheme
+                isAppearanceLightNavigationBars = !darkTheme
+            }
         }
     }
 
