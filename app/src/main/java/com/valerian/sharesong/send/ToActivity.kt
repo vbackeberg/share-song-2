@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.await
 
-abstract class ToActivity : ComponentActivity() {
+abstract class ToActivity(private val targetService: String) : ComponentActivity() {
     private var textShowingIntent: String? by mutableStateOf("Send Song Activity no shared intent")
     private var lastIntent: Intent? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +37,7 @@ abstract class ToActivity : ComponentActivity() {
         }
     }
 
-    abstract val targetService: String
+    open val targetServiceDisplayName = targetService
 
     override fun onResume() {
         super.onResume()
@@ -65,10 +65,10 @@ abstract class ToActivity : ComponentActivity() {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
                         this@ToActivity,
-                        "Sorry, your song could not be converted. Maybe, it wasn't found on ${targetService}.",
+                        "Sorry, your song could not be converted. Maybe, it wasn't found on ${targetServiceDisplayName}.",
                         Toast.LENGTH_SHORT
                     ).show()
-                }
+2                }
                 return@launch
             }
 
@@ -76,7 +76,7 @@ abstract class ToActivity : ComponentActivity() {
                 action = Intent.ACTION_SEND
                 putExtra(
                     Intent.EXTRA_TEXT,
-                    "Shared from ${response.originService} to $targetService because I can. \uD83D\uDE0E" +
+                    "Shared from ${response.originService} to $targetServiceDisplayName because I can. \uD83D\uDE0E" +
                             "${System.lineSeparator()}${response.targetServiceUrl}"
                 )
                 type = "text/plain"
