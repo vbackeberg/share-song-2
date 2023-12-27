@@ -1,6 +1,5 @@
 package com.valerian.sharesong
 
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -12,7 +11,7 @@ interface ShareSongApi {
     fun convert(
         @Query("originServiceUrl") originServiceUrl: String,
         @Query("targetService") targetService: String
-    ): Call<ResponseBody>
+    ): Call<ConversionResponse>
 }
 
 object ShareSongClient {
@@ -26,3 +25,8 @@ object ShareSongClient {
             .create(ShareSongApi::class.java)
     }
 }
+
+data class ConversionResponse(
+    val targetServiceUrl: String,
+    val originService: String
+)

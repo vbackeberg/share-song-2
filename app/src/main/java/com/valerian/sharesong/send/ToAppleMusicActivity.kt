@@ -1,5 +1,5 @@
 package com.valerian.sharesong.send
 
-class ToAppleMusicActivity : ToActivity() {
-    override val targetService = "AppleMusic"
+class ToAppleMusicActivity : ToActivity("AppleMusic") {
+    override val targetServiceDisplayName = "Apple Music"
 }

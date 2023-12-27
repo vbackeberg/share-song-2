@@ -1,5 +1,3 @@
 package com.valerian.sharesong.send
 
-class ToSpotifyActivity : ToActivity() {
-    override val targetService = "Spotify"
-}
+class ToSpotifyActivity : ToActivity("Spotify")

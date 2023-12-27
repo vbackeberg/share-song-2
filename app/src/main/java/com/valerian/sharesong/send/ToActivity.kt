@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.await
 
-abstract class ToActivity : ComponentActivity() {
+abstract class ToActivity(private val targetService: String) : ComponentActivity() {
     private var textShowingIntent: String? by mutableStateOf("Send Song Activity no shared intent")
     private var lastIntent: Intent? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +37,7 @@ abstract class ToActivity : ComponentActivity() {
         }
     }
 
-    abstract val targetService: String
+    open val targetServiceDisplayName = targetService
 
     override fun onResume() {
         super.onResume()
@@ -59,22 +59,26 @@ abstract class ToActivity : ComponentActivity() {
         textShowingIntent = intentUri
 
         CoroutineScope(Dispatchers.IO).launch {
-            val targetServiceUrl = try {
-                ShareSongClient.instance.convert(intentUri, targetService).await().string()
+            val response = try {
+                ShareSongClient.instance.convert(intentUri, targetService).await()
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
                         this@ToActivity,
-                        "Sorry, your song could not be converted. Maybe, it wasn't found on ${targetService}.",
+                        "Sorry, your song could not be converted. Maybe, it wasn't found on ${targetServiceDisplayName}.",
                         Toast.LENGTH_SHORT
                     ).show()
-                }
+2                }
                 return@launch
             }
 
             val sendIntent = Intent.createChooser(Intent().apply {
                 action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, targetServiceUrl)
+                putExtra(
+                    Intent.EXTRA_TEXT,
+                    "Shared from ${response.originService} to $targetServiceDisplayName because I can. \uD83D\uDE0E" +
+                            "${System.lineSeparator()}${response.targetServiceUrl}"
+                )
                 type = "text/plain"
             }, null)
 
