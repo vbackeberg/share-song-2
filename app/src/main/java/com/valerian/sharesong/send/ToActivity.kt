@@ -68,7 +68,8 @@ abstract class ToActivity(private val targetService: String) : ComponentActivity
                         "Sorry, your song could not be converted. Maybe, it wasn't found on ${targetServiceDisplayName}.",
                         Toast.LENGTH_SHORT
                     ).show()
-2                }
+                    2
+                }
                 return@launch
             }
 

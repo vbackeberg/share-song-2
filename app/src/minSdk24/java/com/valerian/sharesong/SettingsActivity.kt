@@ -37,7 +37,8 @@ class SettingsActivity : ComponentActivity() {
         ("Spotify" to "Spotify"),
         ("Deezer" to "Deezer"),
         ("Tidal" to "Tidal"),
-        ("AppleMusic" to "Apple Music")
+        ("AppleMusic" to "Apple Music"),
+        ("YoutubeMusic" to "Youtube Music")
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,13 +69,20 @@ class SettingsActivity : ComponentActivity() {
                             modifier = Modifier.padding(16.dp)
                         )
 
+                        Text(
+                            fontSize = 16.sp,
+                            text = "If you click a link from a supported music service, it will be opened in ${items[selectedService.value]}.",
+                            modifier = Modifier.padding(16.dp)
+                        )
+
                         LazyVerticalGrid(
                             columns = GridCells.Fixed(2),
                             horizontalArrangement = Arrangement.SpaceBetween,
                         ) {
                             val itemKeys = items.keys.toList()
                             itemsIndexed(itemKeys) { index, _ ->
-                                ButtonWithOutline(text = items[itemKeys[index]].orEmpty(),
+                                ButtonWithOutline(
+                                    text = items[itemKeys[index]].orEmpty(),
                                     isSelected = itemKeys[index] == selectedService.value,
                                     onSelected = {
                                         coroutineScope.launch {
@@ -85,12 +93,6 @@ class SettingsActivity : ComponentActivity() {
                                     })
                             }
                         }
-
-                        Text(
-                            fontSize = 16.sp,
-                            text = "If you click a link from a supported music service, it will be opened in ${items[selectedService.value]}.",
-                            modifier = Modifier.padding(16.dp)
-                        )
                     }
                 }
             }
@@ -118,9 +120,9 @@ fun ButtonWithOutline(
         onClick = onSelected,
         modifier = Modifier
             .padding(16.dp)
-            .height(128.dp),
+            .height(96.dp),
         contentPadding = PaddingValues(8.dp),
     ) {
-        Text(text = text, fontSize = 20.sp)
+        Text(text = text, fontSize = 20.sp, textAlign = TextAlign.Center)
     }
 }

@@ -8,4 +8,5 @@
     <string name="title_activity_to_deezer">Deezer</string>
     <string name="title_activity_to_tidal">Tidal</string>
     <string name="title_activity_to_apple_music">Apple Music</string>
+    <string name="title_activity_to_youtube_music">Youtube Music</string>
 </resources>
