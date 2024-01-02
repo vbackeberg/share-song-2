@@ -51,6 +51,8 @@ android {
         }
     }
 
+    // On all devices below SDK 31, the app can automatically open app links in the user's music app.
+    // On all devices above, the app cannot offer this functionality due to Androids App Link constraints.
     flavorDimensions += "api"
     productFlavors {
         create("minSdk31") {
