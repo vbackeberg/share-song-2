@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace 'com.valerian.sharesong'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.valerian.sharesong"
         minSdk 31
-        targetSdk 33
+        targetSdk 34
         versionCode 9
         versionName "3.4"
 
