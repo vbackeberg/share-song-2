@@ -19,7 +19,6 @@
         <activity
             android:name=".send.ToActivity"
             android:exported="false"
-            android:finishOnTaskLaunch="true"
             android:label="@string/title_activity_to"
             android:theme="@style/Theme.ShareSong" />
         <activity
