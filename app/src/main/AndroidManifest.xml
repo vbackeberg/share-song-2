@@ -25,7 +25,8 @@
             android:name=".send.ToSpotifyActivity"
             android:exported="true"
             android:finishOnTaskLaunch="true"
-            android:label="@string/title_activity_to_spotify">
+            android:label="@string/title_activity_to_spotify"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
@@ -38,7 +39,8 @@
             android:name=".send.ToDeezerActivity"
             android:exported="true"
             android:finishOnTaskLaunch="true"
-            android:label="@string/title_activity_to_deezer">
+            android:label="@string/title_activity_to_deezer"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
@@ -51,7 +53,8 @@
             android:name=".send.ToTidalActivity"
             android:exported="true"
             android:finishOnTaskLaunch="true"
-            android:label="@string/title_activity_to_tidal">
+            android:label="@string/title_activity_to_tidal"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
@@ -64,7 +67,8 @@
             android:name=".send.ToAppleMusicActivity"
             android:exported="true"
             android:finishOnTaskLaunch="true"
-            android:label="@string/title_activity_to_apple_music">
+            android:label="@string/title_activity_to_apple_music"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
@@ -77,7 +81,8 @@
             android:name=".send.ToYoutubeMusicActivity"
             android:exported="true"
             android:finishOnTaskLaunch="true"
-            android:label="@string/title_activity_to_youtube_music">
+            android:label="@string/title_activity_to_youtube_music"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
