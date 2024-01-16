@@ -10,6 +10,7 @@ fun uriFromSharedString(string: String): String? {
         return null
     }
 
-    println("uriString: $uriString")
+    println("uriString: $uriString") // TODO remove from logs
+    
     return uriString
 }
