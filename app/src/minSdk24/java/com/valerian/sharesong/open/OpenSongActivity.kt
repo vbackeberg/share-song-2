@@ -38,7 +38,7 @@ class OpenSongActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.surface
                 ) {
-                    LoadingScreen(textShowingIntent)
+                    LoadingScreen({}, textShowingIntent)
                 }
             }
         }

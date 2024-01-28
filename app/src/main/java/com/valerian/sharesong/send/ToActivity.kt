@@ -5,13 +5,9 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
 import com.valerian.sharesong.ShareSongClient
 import com.valerian.sharesong.converter.from.uriFromSharedString
 import com.valerian.sharesong.ui.composable.LoadingScreen
@@ -24,15 +20,17 @@ import retrofit2.await
 abstract class ToActivity(private val targetService: String) : ComponentActivity() {
     private var textShowingIntent: String? by mutableStateOf("Send Song Activity no shared intent")
     private var lastIntent: Intent? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             com.valerian.sharesong.ui.theme.ShareSongTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.surface
-                ) {
-                    LoadingScreen(textShowingIntent)
-                }
+
+                LoadingScreen(
+                    onDismissRequest = {},
+                    textShowingIntent
+                )
+
             }
         }
     }
@@ -42,8 +40,10 @@ abstract class ToActivity(private val targetService: String) : ComponentActivity
     override fun onResume() {
         super.onResume()
         if (intent == lastIntent) return
+
         lastIntent = intent
         val intentString = intent.getStringExtra(Intent.EXTRA_TEXT)
+
         if (intentString.isNullOrBlank()) {
             println("intentString is null")
             toastNotSupported()
@@ -59,8 +59,21 @@ abstract class ToActivity(private val targetService: String) : ComponentActivity
         textShowingIntent = intentUri
 
         CoroutineScope(Dispatchers.IO).launch {
-            val response = try {
-                ShareSongClient.instance.convert(intentUri, targetService).await()
+            try {
+                val response = ShareSongClient.instance.convert(intentUri, targetService).await()
+
+                val sendIntent = Intent.createChooser(Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(
+                        Intent.EXTRA_TEXT,
+                        "Shared from ${response.originService} to $targetServiceDisplayName because I can. \uD83D\uDE0E" +
+                                "${System.lineSeparator()}${response.targetServiceUrl}"
+                    )
+                    type = "text/plain"
+                }, null)
+
+                startActivity(sendIntent)
+
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
@@ -70,20 +83,9 @@ abstract class ToActivity(private val targetService: String) : ComponentActivity
                     ).show()
                     2
                 }
-                return@launch
             }
 
-            val sendIntent = Intent.createChooser(Intent().apply {
-                action = Intent.ACTION_SEND
-                putExtra(
-                    Intent.EXTRA_TEXT,
-                    "Shared from ${response.originService} to $targetServiceDisplayName because I can. \uD83D\uDE0E" +
-                            "${System.lineSeparator()}${response.targetServiceUrl}"
-                )
-                type = "text/plain"
-            }, null)
-
-            startActivity(sendIntent)
+            finish()
         }
     }
 
@@ -91,5 +93,7 @@ abstract class ToActivity(private val targetService: String) : ComponentActivity
         Toast.makeText(
             this, "Sorry, this link is not supported", Toast.LENGTH_SHORT
         ).show()
+        finish()
     }
+
 }
