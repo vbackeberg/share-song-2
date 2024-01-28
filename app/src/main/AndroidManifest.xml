@@ -20,13 +20,14 @@
             android:name=".send.ToActivity"
             android:exported="false"
             android:label="@string/title_activity_to"
-            android:theme="@style/Theme.ShareSong" />
+            android:theme="@style/Theme.AppCompat.Dialog" />
         <activity
             android:name=".send.ToSpotifyActivity"
             android:exported="true"
             android:finishOnTaskLaunch="true"
             android:label="@string/title_activity_to_spotify"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:theme="@style/Theme.AppCompat.Dialog" >
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
@@ -40,7 +41,8 @@
             android:exported="true"
             android:finishOnTaskLaunch="true"
             android:label="@string/title_activity_to_deezer"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:theme="@style/Theme.AppCompat.Dialog" >
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
@@ -54,7 +56,8 @@
             android:exported="true"
             android:finishOnTaskLaunch="true"
             android:label="@string/title_activity_to_tidal"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:theme="@style/Theme.AppCompat.Dialog" >
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
@@ -68,7 +71,8 @@
             android:exported="true"
             android:finishOnTaskLaunch="true"
             android:label="@string/title_activity_to_apple_music"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:theme="@style/Theme.AppCompat.Dialog">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
@@ -82,7 +86,8 @@
             android:exported="true"
             android:finishOnTaskLaunch="true"
             android:label="@string/title_activity_to_youtube_music"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:theme="@style/Theme.AppCompat.Dialog" >
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
