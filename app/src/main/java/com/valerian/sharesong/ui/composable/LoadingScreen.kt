@@ -45,7 +45,7 @@ fun LoadingScreen(
                     textAlign = TextAlign.Center,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(start = 16.dp)
+                    modifier = Modifier.fillMaxWidth()
                 )
 
                 Spacer(modifier = Modifier.weight(1f))
