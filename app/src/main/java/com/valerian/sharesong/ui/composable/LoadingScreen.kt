@@ -23,10 +23,9 @@ import com.valerian.sharesong.ui.theme.ShareSongTheme
 
 @Composable
 fun LoadingScreen(
-    onDismissRequest: () -> Unit,
     name: String?
 ) {
-    Dialog(onDismissRequest = { onDismissRequest() }) {
+    Dialog(onDismissRequest = {}) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -69,6 +68,6 @@ fun LoadingScreen(
 @Composable
 fun GreetingPreview() {
     ShareSongTheme {
-        LoadingScreen({ }, "MainActivity")
+        LoadingScreen( "MainActivity")
     }
 }
