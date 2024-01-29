@@ -52,8 +52,10 @@ class OpenSongActivity : ComponentActivity() {
         textShowingIntent = intentUri
 
         if (ALLOWED_URLS.none { it.containsMatchIn(intentUri) }) {
+            // TODO: Check if user tries to share an album, playlist or sth else and give meaningful feedback.
+
             Toast.makeText(
-                this, "Sorry, this link is not supported", Toast.LENGTH_SHORT
+                this, "Sorry, this link is not supported. You can only share songs.", Toast.LENGTH_SHORT
             ).show()
             return
         }

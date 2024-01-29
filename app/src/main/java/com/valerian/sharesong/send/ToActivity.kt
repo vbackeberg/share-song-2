@@ -89,7 +89,7 @@ abstract class ToActivity(private val targetService: String) : ComponentActivity
 
     private fun toastNotSupported() {
         Toast.makeText(
-            this, "Sorry, this link is not supported", Toast.LENGTH_SHORT
+            this, "Sorry, this link is not supported. You can only share songs.", Toast.LENGTH_SHORT
         ).show()
         finish()
     }
