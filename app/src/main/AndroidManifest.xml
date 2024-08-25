@@ -18,76 +18,12 @@
         tools:targetApi="33">
         <activity
             android:name=".send.ToActivity"
-            android:exported="false"
+            android:exported="true"
             android:label="@string/title_activity_to"
-            android:theme="@style/Theme.AppCompat.Dialog" />
-        <activity
-            android:name=".send.ToSpotifyActivity"
-            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Dialog"
             android:finishOnTaskLaunch="true"
-            android:label="@string/title_activity_to_spotify"
             android:noHistory="true"
-            android:theme="@style/Theme.AppCompat.Dialog" >
-            <intent-filter>
-                <action android:name="android.intent.action.SEND" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="text/plain" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".send.ToDeezerActivity"
-            android:exported="true"
-            android:finishOnTaskLaunch="true"
-            android:label="@string/title_activity_to_deezer"
-            android:noHistory="true"
-            android:theme="@style/Theme.AppCompat.Dialog" >
-            <intent-filter>
-                <action android:name="android.intent.action.SEND" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="text/plain" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".send.ToTidalActivity"
-            android:exported="true"
-            android:finishOnTaskLaunch="true"
-            android:label="@string/title_activity_to_tidal"
-            android:noHistory="true"
-            android:theme="@style/Theme.AppCompat.Dialog" >
-            <intent-filter>
-                <action android:name="android.intent.action.SEND" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="text/plain" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".send.ToAppleMusicActivity"
-            android:exported="true"
-            android:finishOnTaskLaunch="true"
-            android:label="@string/title_activity_to_apple_music"
-            android:noHistory="true"
-            android:theme="@style/Theme.AppCompat.Dialog">
-            <intent-filter>
-                <action android:name="android.intent.action.SEND" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="text/plain" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".send.ToYoutubeMusicActivity"
-            android:exported="true"
-            android:finishOnTaskLaunch="true"
-            android:label="@string/title_activity_to_youtube_music"
-            android:noHistory="true"
-            android:theme="@style/Theme.AppCompat.Dialog" >
+            >
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
