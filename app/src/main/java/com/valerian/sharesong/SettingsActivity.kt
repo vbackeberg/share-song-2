@@ -3,16 +3,18 @@ package com.valerian.sharesong
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -41,6 +43,7 @@ class SettingsActivity : ComponentActivity() {
         ("YoutubeMusic" to "Youtube Music")
     )
 
+    @OptIn(ExperimentalLayoutApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -50,10 +53,13 @@ class SettingsActivity : ComponentActivity() {
         setContent {
             ShareSongTheme {
                 Surface(color = MaterialTheme.colorScheme.surface) {
+                    val scrollState = ScrollState(0)
+
                     Column(
                         modifier = Modifier
                             .padding(16.dp, 48.dp)
                             .fillMaxSize()
+                            .verticalScroll(scrollState)
                     ) {
 
                         val selectedService = targetService.collectAsStateWithLifecycle(
@@ -75,13 +81,12 @@ class SettingsActivity : ComponentActivity() {
                             modifier = Modifier.padding(16.dp)
                         )
 
-                        LazyVerticalGrid(
-                            columns = GridCells.Fixed(2),
-                            horizontalArrangement = Arrangement.SpaceBetween,
+                        FlowRow(
+                            horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             val itemKeys = items.keys.toList()
-                            itemsIndexed(itemKeys) { index, _ ->
-                                ButtonWithOutline(
+                            itemKeys.forEachIndexed { index, _ ->
+                                ButtonWithOutline (
                                     text = items[itemKeys[index]].orEmpty(),
                                     isSelected = itemKeys[index] == selectedService.value,
                                     onSelected = {
@@ -121,7 +126,8 @@ fun ButtonWithOutline(
         onClick = onSelected,
         modifier = Modifier
             .padding(16.dp)
-            .height(96.dp),
+            .height(96.dp)
+            .width(128.dp),
         contentPadding = PaddingValues(8.dp),
     ) {
         Text(text = text, fontSize = 20.sp, textAlign = TextAlign.Center)
