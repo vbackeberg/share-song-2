@@ -65,13 +65,13 @@ class SettingsActivity : ComponentActivity() {
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center,
                             fontSize = 24.sp,
-                            text = "Choose your music service",
-                            modifier = Modifier.padding(16.dp)
+                            text = "Select your music service",
+                            modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
                         )
 
                         Text(
                             fontSize = 16.sp,
-                            text = "If you click a link from a supported music service, it will be opened in ${items[selectedService.value]}.",
+                            text = "Choose the music service we should convert your song to. Next, select and share any song link and look for the Share Song icon. Tap it to convert your song!",
                             modifier = Modifier.padding(16.dp)
                         )
 
@@ -89,6 +89,7 @@ class SettingsActivity : ComponentActivity() {
                                             dataStore.edit { preferences ->
                                                 preferences[SERVICE_OF_USER] = itemKeys[index]
                                             }
+                                            setTitle(R.string.title_activity_to_deezer)
                                         }
                                     })
                             }

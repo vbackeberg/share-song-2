@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "com.valerian.sharesong"
-        minSdk 31
+        minSdk 24
         targetSdk 34
         versionCode 11
         versionName "4.0"
@@ -48,24 +48,6 @@ android {
     externalNativeBuild {
         cmake {
             path "src/main/cpp/CMakeLists.txt"
-        }
-    }
-
-    // On all devices below SDK 31, the app can automatically open app links in the user's music app.
-    // On all devices above, the app cannot offer this functionality due to Androids App Link constraints.
-    flavorDimensions += "api"
-    productFlavors {
-        create("minSdk31") {
-            dimension = "api"
-            minSdk 31
-            versionNameSuffix = "-minSdk31"
-            versionCode = 20000 + (android.defaultConfig.versionCode ?: 0)
-        }
-        create("minSdk24") {
-            dimension = "api"
-            minSdk 24
-            versionNameSuffix = "-minSdk24"
-            versionCode = 10000 + (android.defaultConfig.versionCode ?: 0)
         }
     }
 }

@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">Share Song</string>
-    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_settings">Settings Activity</string>
 
     <!-- Sync Preferences -->
-    <string name="title_activity_to">Convert with ShareSong</string>
+    <string name="title_activity_to">Convert</string>
+    <string name="title_activity_to_deezer">Convert to Deezer</string>
 </resources>

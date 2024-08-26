@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.await
 
-class ToActivity : ComponentActivity() {
+class SendActivity : ComponentActivity() {
     private var textShowingIntent: String? by mutableStateOf("Send Song Activity no shared intent")
     private var lastIntent: Intent? = null
 
@@ -63,7 +63,7 @@ class ToActivity : ComponentActivity() {
             if (targetServiceName == null) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
-                        this@ToActivity,
+                        this@SendActivity,
                         "Open Share Song settings, and choose the service you want to convert to.",
                         Toast.LENGTH_SHORT
                     ).show()
@@ -76,7 +76,7 @@ class ToActivity : ComponentActivity() {
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
-                        this@ToActivity,
+                        this@SendActivity,
                         "Sorry, your song could not be converted. Maybe, it wasn't found on ${targetServiceName}.",
                         Toast.LENGTH_SHORT
                     ).show()

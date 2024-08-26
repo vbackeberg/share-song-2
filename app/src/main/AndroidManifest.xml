@@ -17,7 +17,7 @@
         android:theme="@style/Theme.ShareSong"
         tools:targetApi="33">
         <activity
-            android:name=".send.ToActivity"
+            android:name=".send.SendActivity"
             android:exported="true"
             android:label="@string/title_activity_to"
             android:theme="@style/Theme.AppCompat.Dialog"
@@ -30,6 +30,15 @@
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
