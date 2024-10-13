@@ -41,6 +41,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".OpenActivity"
+            android:exported="true"
+            android:finishOnTaskLaunch="true"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.APP_BROWSER" />
+
+                <data android:scheme="https" />
+                <data android:host="open.spotify.com" />
+                <data android:pathPattern="/track/.*" />
+                <data android:host="deezer.page.link" />
+                <data android:pathPattern="/.*" />
+                <data android:host="tidal.com" />
+                <data android:pathPattern="/track/.*" />
+                <data android:host="music.apple.com" />
+                <data android:pathPattern="/.*/album/.*/.*" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
